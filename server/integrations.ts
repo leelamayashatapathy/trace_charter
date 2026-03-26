@@ -151,6 +151,10 @@ async function sendEmail(lead: DemoLead) {
   const from = process.env.DEMO_FROM_EMAIL ?? "TraceCharter <onboarding@resend.dev>";
 
   if (!apiKey || !to) {
+    log("warn", "email.skipped_missing_config", {
+      hasApiKey: Boolean(apiKey),
+      hasToAddress: Boolean(to),
+    });
     return false;
   }
 

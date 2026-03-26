@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { microcopySamples, resourceTopics } from "../../content/siteContent";
+import { getWhatsAppHref } from "../../utils/whatsapp";
 
 declare global {
   interface Window {
@@ -27,9 +28,11 @@ function ResourcesAndCta() {
   const [submitMessage, setSubmitMessage] = useState("");
   const [captchaToken, setCaptchaToken] = useState("");
   const [captchaReady, setCaptchaReady] = useState(false);
-  const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
+  const captchaEnabled = import.meta.env.VITE_CAPTCHA_ENABLED === "true";
+  const siteKey = captchaEnabled ? import.meta.env.VITE_TURNSTILE_SITE_KEY : undefined;
   const turnstileContainerRef = useRef<HTMLDivElement | null>(null);
   const widgetIdRef = useRef<string | null>(null);
+  const whatsappHref = getWhatsAppHref();
 
   useEffect(() => {
     if (!siteKey || !turnstileContainerRef.current || widgetIdRef.current) {
@@ -107,7 +110,7 @@ function ResourcesAndCta() {
       return;
     }
 
-    if (siteKey && !captchaToken) {
+    if (captchaEnabled && siteKey && !captchaToken) {
       setSubmitStatus("error");
       setSubmitMessage("Please complete CAPTCHA verification before submitting.");
       return;
@@ -124,7 +127,7 @@ function ResourcesAndCta() {
         locationsManaged,
         primaryConcern: String(formData.get("primaryConcern") ?? "").trim(),
         notes: String(formData.get("notes") ?? "").trim() || undefined,
-        captchaToken: captchaToken || undefined,
+        captchaToken: captchaEnabled ? captchaToken || undefined : undefined,
       };
 
       const response = await fetch("/api/book-demo", {
@@ -141,7 +144,9 @@ function ResourcesAndCta() {
       }
 
       form.reset();
-      window.turnstile?.reset(widgetIdRef.current ?? undefined);
+      if (captchaEnabled) {
+        window.turnstile?.reset(widgetIdRef.current ?? undefined);
+      }
       setCaptchaToken("");
       setSubmitStatus("success");
       setSubmitMessage(result.message ?? "Demo request received.");
@@ -209,6 +214,16 @@ function ResourcesAndCta() {
               >
                 Book Demo
               </a>
+              {whatsappHref ? (
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-lg border border-emerald-400 bg-emerald-50 px-5 py-3 text-sm font-semibold text-emerald-700 hover:bg-emerald-100"
+                >
+                  Talk to Sales on WhatsApp
+                </a>
+              ) : null}
               <a
                 href="#evidence-pack"
                 className="rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:border-slate-400"
@@ -299,24 +314,40 @@ function ResourcesAndCta() {
               />
             </div>
 
-            {siteKey ? (
-              <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
-                <div ref={turnstileContainerRef} />
-                {!captchaReady ? (
-                  <p className="mt-2 text-xs text-slate-500">Loading CAPTCHA...</p>
-                ) : null}
-                <input type="hidden" name="captchaToken" value={captchaToken} readOnly />
-              </div>
-            ) : (
-              <p className="text-xs text-amber-700">
-                CAPTCHA is not configured. Set `VITE_TURNSTILE_SITE_KEY` for production.
-              </p>
-            )}
+            {captchaEnabled ? (
+              siteKey ? (
+                <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                  <div ref={turnstileContainerRef} />
+                  {!captchaReady ? (
+                    <p className="mt-2 text-xs text-slate-500">Loading CAPTCHA...</p>
+                  ) : null}
+                  <input type="hidden" name="captchaToken" value={captchaToken} readOnly />
+                </div>
+              ) : (
+                <p className="text-xs text-amber-700">
+                  CAPTCHA is enabled but missing `VITE_TURNSTILE_SITE_KEY`.
+                </p>
+              )
+            ) : null}
 
             <p className="text-xs text-slate-500">
               Security reassurance: least-privilege connection, transparent access model, and
               customer-controlled retention.
             </p>
+            {whatsappHref ? (
+              <p className="text-xs text-slate-500">
+                Prefer chat?{" "}
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-semibold text-emerald-700 hover:text-emerald-800"
+                >
+                  Talk to sales on WhatsApp
+                </a>
+                .
+              </p>
+            ) : null}
 
             {submitMessage ? (
               <p

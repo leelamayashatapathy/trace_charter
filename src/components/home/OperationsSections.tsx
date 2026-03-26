@@ -5,8 +5,11 @@ import {
   securityControls,
   solutionCards,
 } from "../../content/siteContent";
+import { getWhatsAppHref } from "../../utils/whatsapp";
 
 function OperationsSections() {
+  const whatsappHref = getWhatsAppHref();
+
   return (
     <>
       <section id="security" className="section-shell">
@@ -100,10 +103,12 @@ function OperationsSections() {
                   ))}
                 </ul>
                 <a
-                  href="#demo"
+                  href={whatsappHref ?? "#demo"}
+                  target={whatsappHref ? "_blank" : undefined}
+                  rel={whatsappHref ? "noreferrer" : undefined}
                   className="mt-5 inline-block rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-slate-400"
                 >
-                  Talk to Sales
+                  {whatsappHref ? "Talk to Sales on WhatsApp" : "Talk to Sales"}
                 </a>
               </article>
             ))}

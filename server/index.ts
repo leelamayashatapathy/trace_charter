@@ -17,6 +17,7 @@ const allowedOrigins = (process.env.ALLOWED_ORIGIN ?? "http://localhost:3000")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
+const captchaEnabled = process.env.CAPTCHA_ENABLED === "true";
 
 const leadSchema = z.object({
   workEmail: z.string().email(),
@@ -73,14 +74,18 @@ app.post("/api/book-demo", demoLimiter, async (req, res) => {
     }
 
     const lead = parsed.data as DemoLead;
-    const captchaValid = await verifyTurnstileToken(lead.captchaToken, ip);
-    if (!captchaValid) {
-      res.status(400).json({
-        ok: false,
-        error: "CAPTCHA verification failed.",
-        requestId,
-      });
-      return;
+    if (captchaEnabled) {
+      const captchaValid = await verifyTurnstileToken(lead.captchaToken, ip);
+      if (!captchaValid) {
+        res.status(400).json({
+          ok: false,
+          error: "CAPTCHA verification failed.",
+          requestId,
+        });
+        return;
+      }
+    } else {
+      log("info", "captcha.skipped_feature_disabled", { requestId });
     }
 
     const integrationResult = await deliverLead(lead);

@@ -1,6 +1,9 @@
 import { trustSignals } from "../../content/siteContent";
+import { getWhatsAppHref } from "../../utils/whatsapp";
 
 function HeroAndTrust() {
+  const whatsappHref = getWhatsAppHref();
+
   return (
     <>
       <section className="section-shell">
@@ -23,6 +26,16 @@ function HeroAndTrust() {
               >
                 Book a Demo
               </a>
+              {whatsappHref ? (
+                <a
+                  href={whatsappHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-lg border border-emerald-400 bg-emerald-50 px-5 py-3 text-sm font-semibold text-emerald-700 hover:bg-emerald-100"
+                >
+                  Talk to Sales on WhatsApp
+                </a>
+              ) : null}
               <a
                 href="#how-it-works"
                 className="rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:border-slate-400"

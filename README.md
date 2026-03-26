@@ -18,15 +18,19 @@ Production-style React + Vite frontend with a backend demo-request API.
 2. Create local env file from template:
    - Copy values from `.env.example` into `.env`
 3. Configure minimum required variables:
-   - `VITE_TURNSTILE_SITE_KEY`
-   - `CAPTCHA_SECRET_KEY`
    - `ALLOWED_ORIGIN=http://localhost:3000`
-4. Configure at least one destination:
+4. CAPTCHA is disabled by default. Enable only when needed:
+   - Frontend: `VITE_CAPTCHA_ENABLED=true` + `VITE_TURNSTILE_SITE_KEY`
+   - Backend: `CAPTCHA_ENABLED=true` + `CAPTCHA_SECRET_KEY`
+5. Configure at least one destination:
    - CRM: `CRM_PROVIDER` + provider credentials
    - or Email: `RESEND_API_KEY`, `DEMO_TO_EMAIL`
-5. Start frontend + backend together:
+6. Optional: configure WhatsApp sales chat:
+   - `VITE_WHATSAPP_NUMBER` in international format (digits only), e.g. `919876543210`
+   - `VITE_WHATSAPP_MESSAGE` for the prefilled chat message
+7. Start frontend + backend together:
    - `npm run dev`
-6. Open `http://localhost:3000` and submit the Book Demo form.
+8. Open `http://localhost:3000` and submit the Book Demo form.
 
 ## Scripts
 - `npm run dev`: run Vite client + API server concurrently
@@ -46,7 +50,7 @@ Request JSON:
   "locationsManaged": 120,
   "primaryConcern": "Listing hijack / malicious edits",
   "notes": "Need faster triage and escalation quality",
-  "captchaToken": "turnstile-token"
+  "captchaToken": "turnstile-token (optional, only when CAPTCHA is enabled)"
 }
 ```
 

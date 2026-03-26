@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { navItems } from "../../content/siteContent";
+import { getWhatsAppHref } from "../../utils/whatsapp";
 
 function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const whatsappHref = getWhatsAppHref();
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/70 bg-[rgba(246,248,251,0.92)] backdrop-blur-sm">
@@ -55,6 +57,16 @@ function SiteHeader() {
           >
             Book Demo
           </a>
+          {whatsappHref ? (
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-lg border border-emerald-400 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-100"
+            >
+              Talk to Sales
+            </a>
+          ) : null}
         </nav>
       </div>
     </header>
