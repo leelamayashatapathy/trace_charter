@@ -116,13 +116,8 @@ export const incidentTypes = [
 
 export const workflowSteps = [
   "Detect",
-  "Preserve proof",
-  "Open case",
-  "Assign severity and tasks",
-  "Generate evidence pack",
-  "Escalate correctly",
-  "Track outcome",
-  "Review portfolio risk",
+  "Document",
+  "Restore",
 ];
 
 export const capabilities: Item[] = [
@@ -170,29 +165,29 @@ export const capabilities: Item[] = [
 
 export const differenceCards = [
   {
-    alternative: "Listings sync platforms",
-    limitation: "Built for distribution and updates, not incident forensics or case operations.",
-    approach: "Focused on abuse detection, structured proof, and escalation workflow.",
+    alternative: "Listing sync and monitoring tools",
+    limitation: "They can flag changes, but they rarely preserve tamper-evident evidence or create a defensible recovery record.",
+    approach: "TraceCharter captures before-and-after proof, chain-of-custody context, and recovery guidance in one workflow.",
   },
   {
-    alternative: "Review/reputation suites",
-    limitation: "Optimized for marketing response queues over forensic operations.",
-    approach: "Treats suspicious review events as incidents with severity and timeline.",
+    alternative: "Review and reputation suites",
+    limitation: "They are built for response queues, not urgent-service incidents where fake reviews or impersonation can disrupt trust fast.",
+    approach: "We treat review abuse as an incident with severity, evidence handling, and a structured path to escalation.",
   },
   {
-    alternative: "Change-monitoring alarms",
-    limitation: "Alert-only products leave proof and escalation work to manual effort.",
-    approach: "Combines detection, cases, evidence packs, and guided response.",
+    alternative: "Alert-only alarms",
+    limitation: "They notify teams that something changed, but leave screenshots, documentation, and appeal prep to manual effort.",
+    approach: "We combine detection, evidence packs, case operations, and guided recovery for urgent-service brands under pressure.",
   },
   {
-    alternative: "Spreadsheets + manual escalation",
-    limitation: "Fragmented ownership and weak auditability.",
-    approach: "Structured operations with owners, SLAs, and complete logs.",
+    alternative: "Spreadsheets and ad hoc escalation",
+    limitation: "Fragmented ownership slows response when a bad phone number or fake duplicate is already taking calls.",
+    approach: "TraceCharter gives teams a single incident record with owners, timelines, evidence, and escalation discipline.",
   },
   {
-    alternative: "Support-ticket-only workflows",
-    limitation: "Tickets track requests but not forensic context.",
-    approach: "Unified incident record with evidence, tasks, and outcome tracking.",
+    alternative: "Ticket-only workflows",
+    limitation: "Tickets track requests, but they do not preserve the forensic context urgent-service operators need to recover credibility fast.",
+    approach: "We maintain a unified incident record with artifacts, narrative context, task flow, and outcome tracking.",
   },
 ];
 
@@ -352,17 +347,17 @@ export const resourceTopics = [
   "Call-flow protection and local identity governance templates",
 ];
 
-export const microcopySamples = [
-  "View sample evidence pack",
-  "Open incident",
-  "Export escalation-ready report",
-  "Least-privilege connection",
-  "Audit trail enabled",
-  "Severity: critical",
-  "Triage initiated within 24 hours",
-  "No unresolved critical incidents",
-  "Review spike detected",
-  "Submission path recommended",
-  "Drop screenshots or URLs here",
-  "Submit your incident to begin guided recovery",
+export const proofPoints = [
+  {
+    title: "Locksmith duplicate recovery",
+    detail: "A duplicate listing was documented, escalated, and contained before it could keep siphoning urgent calls.",
+  },
+  {
+    title: "HVAC review attack triage",
+    detail: "Coordinated negative reviews were organized into an evidence pack so the operator could respond with a clear timeline and artifacts.",
+  },
+  {
+    title: "Towing phone-number diversion response",
+    detail: "A diverted dispatch line was captured with before-and-after proof and moved into a structured recovery workflow.",
+  },
 ];

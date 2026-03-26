@@ -74,49 +74,89 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  margin-bottom: 0.8rem;
-  font-size: 0.72rem;
+  margin-bottom: 0.9rem;
+  padding: 0.34rem 0.72rem;
+  border: 1px solid rgba(191, 211, 232, 0.9);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(245, 249, 253, 0.98), rgba(235, 243, 250, 0.92));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #64748b;
+  color: #48637f;
 }
 
 .card-label::before {
   content: "";
-  width: 0.7rem;
-  height: 1px;
-  background: linear-gradient(90deg, #2a67a0, #8fb6d8);
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2a67a0, #6fa7c7);
+  box-shadow: 0 0 0 3px rgba(42, 103, 160, 0.08);
 }
 
 .card-title {
+  position: relative;
   margin: 0;
+  padding-bottom: 0.7rem;
   font-size: 1.06rem;
-  line-height: 1.32;
-  font-weight: 650;
-  letter-spacing: -0.018em;
+  line-height: 1.28;
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: -0.024em;
   color: #0f172a;
   text-wrap: balance;
+  text-rendering: optimizeLegibility;
 }
 
 .card-title-sm {
+  position: relative;
   margin: 0;
+  padding-bottom: 0.65rem;
   font-size: 0.96rem;
-  line-height: 1.35;
-  font-weight: 650;
-  letter-spacing: -0.012em;
+  line-height: 1.3;
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
   color: #0f172a;
   text-wrap: balance;
+  text-rendering: optimizeLegibility;
 }
 
 .card-title-lg {
+  position: relative;
   margin: 0;
+  padding-bottom: 0.8rem;
   font-size: clamp(1.18rem, 1.6vw, 1.42rem);
-  line-height: 1.24;
-  font-weight: 650;
-  letter-spacing: -0.022em;
+  line-height: 1.2;
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: -0.028em;
   color: #0f172a;
   text-wrap: balance;
+  text-rendering: optimizeLegibility;
+}
+
+.card-title::after,
+.card-title-sm::after,
+.card-title-lg::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 2.6rem;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2a67a0, #8fb6d8);
+  opacity: 0.95;
+}
+
+.card:hover .card-title::after,
+.card:hover .card-title-sm::after,
+.card:hover .card-title-lg::after {
+  width: 3.4rem;
+  transition: width 0.25s ease;
 }
 
 .panel-hover {

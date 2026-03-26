@@ -8,25 +8,30 @@ import {
 } from "../../content/siteContent";
 
 const workflowStepNotes = [
-  "Watch high-risk listing and review signals continuously.",
-  "Capture immutable before/after records and core artifacts.",
-  "Create a structured case with ownership and timeline.",
-  "Score impact to route urgency and assign the right responders.",
-  "Compile escalation-ready evidence in report format.",
-  "Follow incident-specific submission guidance with context.",
-  "Track external responses and close the loop on outcomes.",
-  "Review patterns portfolio-wide to reduce repeat incidents.",
+  "Identify hijacks, duplicates, review attacks, and ownership changes before more calls are diverted.",
+  "Preserve before-and-after proof, source artifacts, and case chronology in a reviewer-ready record.",
+  "Guide escalation, appeal preparation, and hardening steps so the listing can return to trusted operation.",
 ];
 
-const workflowStepTags = [
-  "Signal",
-  "Forensics",
-  "Case Ops",
-  "Triage",
-  "Evidence",
-  "Escalation",
-  "Outcome",
-  "Learning",
+const workflowStepTags = ["Signal", "Evidence", "Recovery"];
+const workflowStepPhases = ["Phase 01", "Phase 02", "Phase 03"];
+
+const workflowStepBullets = [
+  [
+    "Watch high-risk listing and review signals.",
+    "Spot phone-number swaps, duplicates, and suspicious access changes.",
+    "Prioritize incidents by business impact.",
+  ],
+  [
+    "Capture immutable before-and-after records.",
+    "Assemble timelines, artifacts, and chain-of-custody notes.",
+    "Generate escalation-ready evidence packs.",
+  ],
+  [
+    "Follow guided submission and appeal paths.",
+    "Track outcomes, ownership, and next actions.",
+    "Harden the listing environment after recovery.",
+  ],
 ];
 
 function CoreSections() {
@@ -88,32 +93,55 @@ function CoreSections() {
         <div className="container-shell">
           <div className="mb-10 max-w-3xl">
             <p className="section-eyebrow">How It Works</p>
-            <h2 className="section-title">Detection to resolution in one controlled flow.</h2>
+            <h2 className="section-title">Detect, document, and restore in one controlled flow.</h2>
+            <p className="section-copy">
+              A simplified response path for urgent-service incidents, with clear evidence handling
+              and guided recovery at every stage.
+            </p>
           </div>
           <div className="relative overflow-hidden rounded-3xl border border-[#c9d9ea] bg-gradient-to-br from-[#eef4fb] via-white to-[#f8fbff] p-6 sm:p-8">
             <div className="pointer-events-none absolute -left-16 top-8 h-32 w-32 rounded-full bg-[#d4e4f6]/50 blur-2xl" />
             <div className="pointer-events-none absolute -right-14 bottom-4 h-28 w-28 rounded-full bg-[#dcecfb]/50 blur-2xl" />
-            <div className="relative grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div className="pointer-events-none absolute inset-x-10 top-[7.25rem] hidden h-px bg-gradient-to-r from-transparent via-[#bfd3e8] to-transparent lg:block" />
+            <div className="relative grid gap-5 lg:grid-cols-3">
               {workflowSteps.map((step, index) => {
                 const completion = Math.round(((index + 1) / workflowSteps.length) * 100);
                 return (
                   <article
                     key={step}
-                    className="group rounded-2xl border border-slate-200/90 bg-white/95 p-5 shadow-[0_12px_30px_rgba(15,23,42,0.06)] transition hover:-translate-y-[2px] hover:shadow-[0_16px_36px_rgba(15,23,42,0.1)]"
+                    className="group relative flex h-full flex-col rounded-[1.4rem] border border-slate-200/90 bg-white/95 p-6 shadow-[0_12px_30px_rgba(15,23,42,0.06)] transition hover:-translate-y-[3px] hover:shadow-[0_20px_44px_rgba(15,23,42,0.12)]"
                   >
-                    <div className="mb-4 flex items-center justify-between">
-                      <span className="mono inline-flex h-8 min-w-8 items-center justify-center rounded-md border border-[#c7d9ec] bg-[#edf4fb] px-2 text-xs font-semibold text-[#0f4c81]">
+                    <div className="pointer-events-none absolute inset-x-0 top-0 h-1 rounded-t-[1.4rem] bg-gradient-to-r from-[#2a67a0] via-[#4d86b8] to-[#7eb8a3]" />
+                    <div className="mb-5 flex items-start justify-between gap-4">
+                      <div>
+                        <p className="card-label">{workflowStepPhases[index] ?? "Phase"}</p>
+                        <h3 className="card-title">{step}</h3>
+                      </div>
+                      <span className="mono inline-flex h-10 min-w-10 items-center justify-center rounded-full border border-[#c7d9ec] bg-[#edf4fb] px-2 text-xs font-semibold text-[#0f4c81] shadow-sm">
                         {String(index + 1).padStart(2, "0")}
                       </span>
+                    </div>
+                    <div className="mb-4">
                       <span className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-600">
                         {workflowStepTags[index] ?? "Step"}
                       </span>
                     </div>
-                    <h3 className="card-title-sm">{step}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-slate-600">
                       {workflowStepNotes[index] ?? "Structured incident response action."}
                     </p>
-                    <div className="mt-4">
+                    <ul className="mt-5 space-y-3 text-sm text-slate-600">
+                      {(workflowStepBullets[index] ?? []).map((bullet) => (
+                        <li key={bullet} className="flex items-start gap-2">
+                          <span className="mt-[0.42rem] h-1.5 w-1.5 rounded-full bg-[#2a67a0]" />
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="mt-auto pt-6">
+                      <div className="mb-2 flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+                        <span>Progress</span>
+                        <span>{completion}%</span>
+                      </div>
                       <div className="h-1.5 overflow-hidden rounded-full bg-slate-200">
                         <div
                           className="h-full rounded-full bg-gradient-to-r from-[#2a67a0] to-[#43a38b]"

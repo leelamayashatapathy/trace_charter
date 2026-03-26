@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
-import { microcopySamples, resourceTopics } from "../../content/siteContent";
+import { proofPoints, resourceTopics } from "../../content/siteContent";
 
 declare global {
   interface Window {
@@ -173,18 +173,19 @@ function ResourcesAndCta() {
             </ul>
           </div>
           <div className="card p-6">
-            <p className="card-label">Microcopy Kit</p>
+            <p className="card-label">Case Notes</p>
             <h2 className="card-title-lg mb-4">
-              Operational language for alerts, tasks, evidence, and onboarding.
+              Short recovery examples that reinforce the proof-first positioning.
             </h2>
-            <div className="flex flex-wrap gap-2">
-              {microcopySamples.map((copy) => (
-                <span
-                  key={copy}
-                  className="rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700"
+            <div className="space-y-3">
+              {proofPoints.map((item) => (
+                <article
+                  key={item.title}
+                  className="rounded-xl border border-slate-200 bg-white px-4 py-4"
                 >
-                  {copy}
-                </span>
+                  <h3 className="card-title-sm mb-2">{item.title}</h3>
+                  <p className="text-sm text-slate-600">{item.detail}</p>
+                </article>
               ))}
             </div>
           </div>
