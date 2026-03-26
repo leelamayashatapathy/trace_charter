@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { microcopySamples, resourceTopics } from "../../content/siteContent";
-import { getWhatsAppHref } from "../../utils/whatsapp";
 
 declare global {
   interface Window {
@@ -32,8 +31,6 @@ function ResourcesAndCta() {
   const siteKey = captchaEnabled ? import.meta.env.VITE_TURNSTILE_SITE_KEY : undefined;
   const turnstileContainerRef = useRef<HTMLDivElement | null>(null);
   const widgetIdRef = useRef<string | null>(null);
-  const whatsappHref = getWhatsAppHref();
-
   useEffect(() => {
     if (!siteKey || !turnstileContainerRef.current || widgetIdRef.current) {
       return;
@@ -106,7 +103,7 @@ function ResourcesAndCta() {
 
     if (!Number.isInteger(locationsManaged) || locationsManaged < 1) {
       setSubmitStatus("error");
-      setSubmitMessage("Please provide a valid number of managed locations.");
+      setSubmitMessage("Please provide a valid number of affected locations.");
       return;
     }
 
@@ -123,14 +120,15 @@ function ResourcesAndCta() {
       const payload = {
         workEmail: String(formData.get("workEmail") ?? "").trim(),
         companyName: String(formData.get("companyName") ?? "").trim(),
-        role: String(formData.get("role") ?? "").trim(),
+        serviceCategory: String(formData.get("serviceCategory") ?? "").trim(),
         locationsManaged,
-        primaryConcern: String(formData.get("primaryConcern") ?? "").trim(),
+        incidentType: String(formData.get("incidentType") ?? "").trim(),
+        phoneDiverted: String(formData.get("phoneDiverted") ?? "").trim(),
         notes: String(formData.get("notes") ?? "").trim() || undefined,
         captchaToken: captchaEnabled ? captchaToken || undefined : undefined,
       };
 
-      const response = await fetch("/api/book-demo", {
+      const response = await fetch("/api/request-consultation", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -140,7 +138,7 @@ function ResourcesAndCta() {
 
       const result = (await response.json()) as { ok: boolean; message?: string; error?: string };
       if (!response.ok || !result.ok) {
-        throw new Error(result.error ?? "Failed to submit demo request.");
+        throw new Error(result.error ?? "Failed to submit consultation request.");
       }
 
       form.reset();
@@ -149,7 +147,7 @@ function ResourcesAndCta() {
       }
       setCaptchaToken("");
       setSubmitStatus("success");
-      setSubmitMessage(result.message ?? "Demo request received.");
+      setSubmitMessage(result.message ?? "Consultation request received.");
     } catch (error) {
       setSubmitStatus("error");
       setSubmitMessage(error instanceof Error ? error.message : "Submission failed.");
@@ -161,11 +159,10 @@ function ResourcesAndCta() {
       <section id="resources" className="section-shell border-y border-slate-200 bg-white/85">
         <div className="container-shell grid gap-8 lg:grid-cols-2">
           <div className="card p-6">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-500">
-              Content Hub Strategy
-            </p>
-            <h2 className="mb-4 text-2xl font-semibold">
-              SEO-forward resources for high-intent incident response searches.
+            <p className="card-label">Resource Hub</p>
+            <h2 className="card-title-lg mb-4">
+              Practical guidance for detecting hijacks, documenting proof, and protecting call
+              flow.
             </h2>
             <ul className="space-y-2 text-sm text-slate-700">
               {resourceTopics.map((topic) => (
@@ -176,10 +173,8 @@ function ResourcesAndCta() {
             </ul>
           </div>
           <div className="card p-6">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-slate-500">
-              UI Microcopy Kit
-            </p>
-            <h2 className="mb-4 text-2xl font-semibold">
+            <p className="card-label">Microcopy Kit</p>
+            <h2 className="card-title-lg mb-4">
               Operational language for alerts, tasks, evidence, and onboarding.
             </h2>
             <div className="flex flex-wrap gap-2">
@@ -196,47 +191,46 @@ function ResourcesAndCta() {
         </div>
       </section>
 
-      <section id="demo" className="section-shell">
+      <section id="consultation" className="section-shell">
         <div className="container-shell grid gap-8 lg:grid-cols-[1.03fr_0.97fr]">
           <div>
             <p className="section-eyebrow">Final CTA</p>
             <h2 className="section-title">
-              Protect your listings with proof-first incident response workflows.
+              Get your calls back under control with evidence-first incident response.
             </h2>
             <p className="section-copy">
-              Book a demo to see detection, case handling, evidence pack generation, and
-              escalation guidance in one disciplined system.
+              Request a consultation to review hijacks, duplicates, review attacks, and recovery
+              options in one structured response workflow.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a
-                href="#demo-form"
+                href="#consultation-form"
                 className="rounded-lg bg-[#0f4c81] px-5 py-3 text-sm font-semibold text-white hover:bg-[#0d416d]"
               >
-                Book Demo
+                Request Consultation
               </a>
-              {whatsappHref ? (
-                <a
-                  href={whatsappHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-lg border border-emerald-400 bg-emerald-50 px-5 py-3 text-sm font-semibold text-emerald-700 hover:bg-emerald-100"
-                >
-                  Talk to Sales on WhatsApp
-                </a>
-              ) : null}
               <a
                 href="#evidence-pack"
                 className="rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:border-slate-400"
               >
-                View a Sample Evidence Pack
+                View Evidence Pack
+              </a>
+              <a
+                href="#how-it-works"
+                className="rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:border-slate-400"
+              >
+                See Response Steps
               </a>
             </div>
+            <p className="mt-4 text-sm text-slate-500">
+              Let&apos;s help you get your calls back under your control.
+            </p>
           </div>
 
           <form
-            id="demo-form"
+            id="consultation-form"
             className="card space-y-4 p-6"
-            aria-label="Book demo form"
+            aria-label="Request consultation form"
             onSubmit={handleSubmit}
           >
             <div>
@@ -260,16 +254,24 @@ function ResourcesAndCta() {
                 <input id="companyName" name="companyName" type="text" className="form-input" required />
               </div>
               <div>
-                <label htmlFor="role" className="form-label">
-                  Role
+                <label htmlFor="serviceCategory" className="form-label">
+                  Industry / service type
                 </label>
-                <input id="role" name="role" type="text" className="form-input" required />
+                <select id="serviceCategory" name="serviceCategory" className="form-input" required>
+                  <option value="Locksmith">Locksmith</option>
+                  <option value="HVAC">HVAC</option>
+                  <option value="Plumbing">Plumbing</option>
+                  <option value="Towing">Towing</option>
+                  <option value="Roadside assistance">Roadside assistance</option>
+                  <option value="Agency">Agency</option>
+                  <option value="Other urgent-service business">Other urgent-service business</option>
+                </select>
               </div>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label htmlFor="locationsManaged" className="form-label">
-                  Locations managed
+                  Number of locations
                 </label>
                 <input
                   id="locationsManaged"
@@ -281,10 +283,10 @@ function ResourcesAndCta() {
                 />
               </div>
               <div>
-                <label htmlFor="primaryConcern" className="form-label">
-                  Primary concern
+                <label htmlFor="incidentType" className="form-label">
+                  Incident type
                 </label>
-                <select id="primaryConcern" name="primaryConcern" className="form-input" required>
+                <select id="incidentType" name="incidentType" className="form-input" required>
                   <option value="Listing hijack / malicious edits">
                     Listing hijack / malicious edits
                   </option>
@@ -295,22 +297,35 @@ function ResourcesAndCta() {
                   <option value="Suspension / visibility restrictions">
                     Suspension / visibility restrictions
                   </option>
-                  <option value="Portfolio governance and reporting">
-                    Portfolio governance and reporting
+                  <option value="Unauthorized owner / access drift">
+                    Unauthorized owner / access drift
+                  </option>
+                  <option value="Knowledge panel misinformation">
+                    Knowledge panel misinformation
                   </option>
                 </select>
               </div>
             </div>
             <div>
+              <label htmlFor="phoneDiverted" className="form-label">
+                Is your phone line currently diverted?
+              </label>
+              <select id="phoneDiverted" name="phoneDiverted" className="form-input" required>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+                <option value="Not sure">Not sure</option>
+              </select>
+            </div>
+            <div>
               <label htmlFor="notes" className="form-label">
-                What workflow gap do you need to fix first?
+                Describe your incident
               </label>
               <textarea
                 id="notes"
                 name="notes"
                 rows={4}
                 className="form-input"
-                placeholder="Example: We need faster triage and stronger evidence quality for impersonation incidents."
+                placeholder="Example: Our emergency number was replaced on three listings and calls are being diverted."
               />
             </div>
 
@@ -334,20 +349,9 @@ function ResourcesAndCta() {
               Security reassurance: least-privilege connection, transparent access model, and
               customer-controlled retention.
             </p>
-            {whatsappHref ? (
-              <p className="text-xs text-slate-500">
-                Prefer chat?{" "}
-                <a
-                  href={whatsappHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="font-semibold text-emerald-700 hover:text-emerald-800"
-                >
-                  Talk to sales on WhatsApp
-                </a>
-                .
-              </p>
-            ) : null}
+            <p className="text-xs text-slate-500">
+              Need urgent help? Submit the consultation form for triage review.
+            </p>
 
             {submitMessage ? (
               <p
@@ -366,9 +370,7 @@ function ResourcesAndCta() {
               disabled={submitStatus === "submitting"}
               className="w-full rounded-lg bg-[#0f4c81] px-4 py-3 text-sm font-semibold text-white hover:bg-[#0d416d] disabled:cursor-not-allowed disabled:opacity-70"
             >
-              {submitStatus === "submitting"
-                ? "Submitting..."
-                : "Request Demo and Workflow Review"}
+              {submitStatus === "submitting" ? "Submitting..." : "Request Consultation"}
             </button>
           </form>
         </div>

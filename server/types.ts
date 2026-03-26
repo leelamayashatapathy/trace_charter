@@ -1,9 +1,10 @@
-export type DemoLead = {
+export type ConsultationLead = {
   workEmail: string;
   companyName: string;
-  role: string;
+  serviceCategory: string;
   locationsManaged: number;
-  primaryConcern: string;
+  incidentType: string;
+  phoneDiverted: string;
   notes?: string;
   captchaToken?: string;
 };

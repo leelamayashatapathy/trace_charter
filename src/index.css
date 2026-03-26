@@ -70,6 +70,55 @@ body {
   box-shadow: 0 10px 35px rgba(15, 23, 42, 0.05);
 }
 
+.card-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.8rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.card-label::before {
+  content: "";
+  width: 0.7rem;
+  height: 1px;
+  background: linear-gradient(90deg, #2a67a0, #8fb6d8);
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.06rem;
+  line-height: 1.32;
+  font-weight: 650;
+  letter-spacing: -0.018em;
+  color: #0f172a;
+  text-wrap: balance;
+}
+
+.card-title-sm {
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.35;
+  font-weight: 650;
+  letter-spacing: -0.012em;
+  color: #0f172a;
+  text-wrap: balance;
+}
+
+.card-title-lg {
+  margin: 0;
+  font-size: clamp(1.18rem, 1.6vw, 1.42rem);
+  line-height: 1.24;
+  font-weight: 650;
+  letter-spacing: -0.022em;
+  color: #0f172a;
+  text-wrap: balance;
+}
+
 .panel-hover {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

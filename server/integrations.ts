@@ -1,7 +1,7 @@
 import { log } from "./logger";
-import type { DemoLead, IntegrationResult } from "./types";
+import type { ConsultationLead, IntegrationResult } from "./types";
 
-async function sendToHubSpot(lead: DemoLead) {
+async function sendToHubSpot(lead: ConsultationLead) {
   const token = process.env.HUBSPOT_ACCESS_TOKEN;
   if (!token) {
     return false;
@@ -17,10 +17,10 @@ async function sendToHubSpot(lead: DemoLead) {
       properties: {
         email: lead.workEmail,
         company: lead.companyName,
-        jobtitle: lead.role,
+        jobtitle: lead.serviceCategory,
         hs_lead_status: "NEW",
         website: "tracecharter.com",
-        message: `Locations: ${lead.locationsManaged}\nConcern: ${lead.primaryConcern}\nNotes: ${lead.notes ?? ""}`,
+        message: `Service category: ${lead.serviceCategory}\nLocations: ${lead.locationsManaged}\nIncident type: ${lead.incidentType}\nPhone diverted: ${lead.phoneDiverted}\nNotes: ${lead.notes ?? ""}`,
       },
     }),
   });
@@ -34,7 +34,7 @@ async function sendToHubSpot(lead: DemoLead) {
   return true;
 }
 
-async function sendToSalesforce(lead: DemoLead) {
+async function sendToSalesforce(lead: ConsultationLead) {
   const instanceUrl = process.env.SALESFORCE_INSTANCE_URL;
   const accessToken = process.env.SALESFORCE_ACCESS_TOKEN;
   if (!instanceUrl || !accessToken) {
@@ -50,10 +50,10 @@ async function sendToSalesforce(lead: DemoLead) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        LastName: lead.role || "Demo Request",
+        LastName: lead.serviceCategory || "Consultation Request",
         Company: lead.companyName,
         Email: lead.workEmail,
-        Description: `Locations: ${lead.locationsManaged}\nConcern: ${lead.primaryConcern}\nNotes: ${lead.notes ?? ""}`,
+        Description: `Service category: ${lead.serviceCategory}\nLocations: ${lead.locationsManaged}\nIncident type: ${lead.incidentType}\nPhone diverted: ${lead.phoneDiverted}\nNotes: ${lead.notes ?? ""}`,
       }),
     },
   );
@@ -67,7 +67,7 @@ async function sendToSalesforce(lead: DemoLead) {
   return true;
 }
 
-async function sendToPipedrive(lead: DemoLead) {
+async function sendToPipedrive(lead: ConsultationLead) {
   const apiToken = process.env.PIPEDRIVE_API_TOKEN;
   const baseUrl = process.env.PIPEDRIVE_BASE_URL ?? "https://api.pipedrive.com/v1";
   if (!apiToken) {
@@ -104,13 +104,13 @@ async function sendToPipedrive(lead: DemoLead) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      title: `Book Demo - ${lead.companyName}`,
+      title: `Consultation Request - ${lead.companyName}`,
       person_id: personId,
       expected_close_date: null,
       label_ids: [],
       owner_id: null,
       value: null,
-      note: `Role: ${lead.role}\nLocations: ${lead.locationsManaged}\nConcern: ${lead.primaryConcern}\nNotes: ${lead.notes ?? ""}`,
+      note: `Service category: ${lead.serviceCategory}\nLocations: ${lead.locationsManaged}\nIncident type: ${lead.incidentType}\nPhone diverted: ${lead.phoneDiverted}\nNotes: ${lead.notes ?? ""}`,
     }),
   });
 
@@ -123,7 +123,9 @@ async function sendToPipedrive(lead: DemoLead) {
   return true;
 }
 
-async function sendToCrm(lead: DemoLead): Promise<Pick<IntegrationResult, "crmDelivered" | "crmProvider">> {
+async function sendToCrm(
+  lead: ConsultationLead,
+): Promise<Pick<IntegrationResult, "crmDelivered" | "crmProvider">> {
   const provider = process.env.CRM_PROVIDER?.toLowerCase();
   if (!provider) {
     return { crmDelivered: false };
@@ -145,7 +147,7 @@ async function sendToCrm(lead: DemoLead): Promise<Pick<IntegrationResult, "crmDe
   return { crmDelivered: false };
 }
 
-async function sendEmail(lead: DemoLead) {
+async function sendEmail(lead: ConsultationLead) {
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.DEMO_TO_EMAIL;
   const from = process.env.DEMO_FROM_EMAIL ?? "TraceCharter <onboarding@resend.dev>";
@@ -159,12 +161,13 @@ async function sendEmail(lead: DemoLead) {
   }
 
   const html = `
-    <h2>New Demo Request</h2>
+    <h2>New Consultation Request</h2>
     <p><strong>Email:</strong> ${lead.workEmail}</p>
     <p><strong>Company:</strong> ${lead.companyName}</p>
-    <p><strong>Role:</strong> ${lead.role}</p>
+    <p><strong>Service category:</strong> ${lead.serviceCategory}</p>
     <p><strong>Locations:</strong> ${lead.locationsManaged}</p>
-    <p><strong>Primary concern:</strong> ${lead.primaryConcern}</p>
+    <p><strong>Incident type:</strong> ${lead.incidentType}</p>
+    <p><strong>Phone diverted:</strong> ${lead.phoneDiverted}</p>
     <p><strong>Notes:</strong> ${lead.notes ?? "-"}</p>
   `;
 
@@ -177,7 +180,7 @@ async function sendEmail(lead: DemoLead) {
     body: JSON.stringify({
       from,
       to,
-      subject: `Demo request: ${lead.companyName}`,
+      subject: `Consultation request: ${lead.companyName}`,
       html,
     }),
   });
@@ -191,7 +194,7 @@ async function sendEmail(lead: DemoLead) {
   return true;
 }
 
-export async function deliverLead(lead: DemoLead): Promise<IntegrationResult> {
+export async function deliverLead(lead: ConsultationLead): Promise<IntegrationResult> {
   const [emailDelivered, crmStatus] = await Promise.all([sendEmail(lead), sendToCrm(lead)]);
 
   return {

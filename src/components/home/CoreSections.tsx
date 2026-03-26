@@ -37,17 +37,19 @@ function CoreSections() {
           <div className="mb-10 max-w-3xl">
             <p className="section-eyebrow">Revenue-critical infrastructure</p>
             <h2 className="section-title">
-              Local business identity is operational infrastructure, not a marketing side task.
+              For urgent-service brands, your listing is part of your dispatch infrastructure.
             </h2>
             <p className="section-copy">
-              Listing abuse causes immediate revenue and trust impact. Incident response discipline
-              is required.
+              For locksmith, HVAC, plumbing, and towing teams, hijacks and fake duplicates can
+              divert urgent calls within hours. Recovery needs evidence, discipline, and a calm
+              response path.
             </p>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             {problemImpacts.map((item) => (
               <article key={item.title} className="card panel-hover p-6">
-                <h3 className="mb-2 text-lg font-semibold">{item.title}</h3>
+                <p className="card-label">Operational Risk</p>
+                <h3 className="card-title mb-2">{item.title}</h3>
                 <p className="mb-3 text-sm text-slate-600">{item.description}</p>
                 <p className="text-sm font-medium text-slate-800">{item.detail}</p>
               </article>
@@ -65,7 +67,8 @@ function CoreSections() {
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {incidentTypes.map((item) => (
               <article key={item.title} className="card p-5">
-                <h3 className="mb-3 text-base font-semibold">{item.title}</h3>
+                <p className="card-label">Incident Class</p>
+                <h3 className="card-title-sm mb-3">{item.title}</h3>
                 <p className="mb-2 text-sm text-slate-600">
                   <span className="font-medium text-slate-800">What happens:</span> {item.what}
                 </p>
@@ -106,7 +109,7 @@ function CoreSections() {
                         {workflowStepTags[index] ?? "Step"}
                       </span>
                     </div>
-                    <h3 className="text-base font-semibold text-slate-900">{step}</h3>
+                    <h3 className="card-title-sm">{step}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-slate-600">
                       {workflowStepNotes[index] ?? "Structured incident response action."}
                     </p>
@@ -131,13 +134,18 @@ function CoreSections() {
           <div className="mb-10 max-w-3xl">
             <p className="section-eyebrow">Product Capabilities</p>
             <h2 className="section-title">
-              Not just monitoring: detection, forensics, case management, and escalation workflow.
+              Not an SEO dashboard and not just monitoring.
             </h2>
+            <p className="section-copy">
+              TraceCharter combines detection, forensics, evidence packs, and cross-platform
+              appeal guidance for urgent-service brands facing listing and review abuse.
+            </p>
           </div>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {capabilities.map((item) => (
               <article key={item.title} className="card p-5">
-                <h3 className="mb-2 text-base font-semibold">{item.title}</h3>
+                <p className="card-label">Capability</p>
+                <h3 className="card-title-sm mb-2">{item.title}</h3>
                 <p className="mb-2 text-sm text-slate-600">{item.description}</p>
                 <p className="text-sm text-slate-800">{item.detail}</p>
               </article>
@@ -151,13 +159,15 @@ function CoreSections() {
           <div className="mb-10 max-w-3xl">
             <p className="section-eyebrow">Why We&apos;re Different</p>
             <h2 className="section-title">
-              We are not local SEO software. We are business identity incident response.
+              We are not local SEO software. We are business identity incident response for
+              urgent-service brands.
             </h2>
           </div>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {differenceCards.map((item) => (
               <article key={item.alternative} className="card p-5">
-                <h3 className="mb-3 text-base font-semibold">{item.alternative}</h3>
+                <p className="card-label">Alternative</p>
+                <h3 className="card-title-sm mb-3">{item.alternative}</h3>
                 <p className="mb-2 text-sm text-slate-600">
                   <span className="font-medium text-slate-800">Typical limitation:</span>{" "}
                   {item.limitation}
@@ -184,18 +194,20 @@ function CoreSections() {
               Submission-ready evidence packs that make escalation credible.
             </h2>
             <p className="mb-6 max-w-2xl text-slate-300">
-              Every pack includes chronology, classification, artifacts, diffs, and narrative
-              context so reviewers can quickly assess incident legitimacy.
+              Each pack includes chronology, classification, before-and-after diffs, source
+              artifacts, SHA-256 hashes, chain-of-custody records, and reviewer-ready narrative
+              context.
             </p>
             <a
-              href="#demo"
+              href="#consultation"
               className="inline-block rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-200"
             >
               View Sample Evidence Pack
             </a>
           </div>
           <div className="rounded-2xl border border-slate-700 bg-slate-950 p-6">
-            <h3 className="mb-4 text-base font-semibold">Evidence Pack Includes</h3>
+            <p className="card-label text-slate-400">Pack Contents</p>
+            <h3 className="card-title-sm mb-4 text-slate-100">Evidence Pack Includes</h3>
             <ul className="grid gap-2 text-sm text-slate-300">
               {evidencePackItems.map((item) => (
                 <li

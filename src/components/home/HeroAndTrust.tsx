@@ -1,9 +1,6 @@
 import { trustSignals } from "../../content/siteContent";
-import { getWhatsAppHref } from "../../utils/whatsapp";
 
 function HeroAndTrust() {
-  const whatsappHref = getWhatsAppHref();
-
   return (
     <>
       <section className="section-shell">
@@ -13,39 +10,36 @@ function HeroAndTrust() {
               New Category: Business Identity Incident Response
             </p>
             <h1 className="text-balance text-4xl font-semibold leading-tight sm:text-5xl">
-              Incident response for the public business identity your revenue depends on.
+              Restore Your Business Listing &amp; Call Flow.
             </h1>
             <p className="max-w-2xl text-lg text-slate-600">
-              Detect suspicious listing and review incidents in minutes, preserve structured proof
-              automatically, and run escalation workflows with SOC-like discipline.
+              Evidence-first incident response for locksmith, HVAC, plumbing, and towing
+              brands. We identify hijacks and duplicates, preserve tamper-evident proof, and
+              guide platform-compliant recovery.
             </p>
             <div className="flex flex-wrap gap-3">
               <a
-                href="#demo"
+                href="#consultation"
                 className="rounded-lg bg-[#0f4c81] px-5 py-3 text-sm font-semibold text-white hover:bg-[#0d416d]"
               >
-                Book a Demo
+                Start Recovery
               </a>
-              {whatsappHref ? (
-                <a
-                  href={whatsappHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-lg border border-emerald-400 bg-emerald-50 px-5 py-3 text-sm font-semibold text-emerald-700 hover:bg-emerald-100"
-                >
-                  Talk to Sales on WhatsApp
-                </a>
-              ) : null}
+              <a
+                href="#consultation"
+                className="rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:border-slate-400"
+              >
+                Request a Risk Assessment
+              </a>
               <a
                 href="#how-it-works"
                 className="rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:border-slate-400"
               >
-                See the Workflow
+                See the Response Process
               </a>
             </div>
             <p className="text-sm text-slate-500">
-              Fast detection + structured proof + response workflow + revenue protection. External
-              enforcement outcomes are never guaranteed.
+              Evidence-first triage, tamper-evident proof, structured response workflow, and
+              revenue protection. External platform outcomes are never guaranteed.
             </p>
           </div>
 
@@ -55,7 +49,7 @@ function HeroAndTrust() {
                 <p className="text-xs font-semibold uppercase tracking-[0.11em] text-slate-500">
                   Identity Ops Console
                 </p>
-                <h2 className="text-lg font-semibold">Live Incident Board</h2>
+                <h2 className="card-title-lg mt-1">Live Incident Board</h2>
               </div>
               <span className="rounded-full border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700">
                 Severity: critical
@@ -64,27 +58,27 @@ function HeroAndTrust() {
             <div className="space-y-4">
               <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <div className="mb-2 flex justify-between">
-                  <p className="text-sm font-semibold text-slate-800">Incident Alert Feed</p>
+                  <p className="card-title-sm">Incident Alert Feed</p>
                   <p className="mono text-xs text-slate-500">Last verified 4 minutes ago</p>
                 </div>
                 <ul className="space-y-2 text-sm text-slate-600">
                   <li className="flex justify-between">
-                    <span>Phone number changed on 14 locations</span>
+                    <span>Emergency hotline replaced with scam number for 8 locations</span>
                     <span className="font-semibold text-rose-700">critical</span>
                   </li>
                   <li className="flex justify-between">
-                    <span>Review spike detected in NYC cluster</span>
+                    <span>Negative review surge hits two HVAC service areas</span>
                     <span className="font-semibold text-amber-700">high</span>
                   </li>
                   <li className="flex justify-between">
-                    <span>Duplicate listing network detected</span>
+                    <span>Fake towing duplicate outranking verified listing</span>
                     <span className="font-semibold text-amber-700">high</span>
                   </li>
                 </ul>
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="rounded-xl border border-slate-200 bg-white p-4">
-                  <p className="mb-2 text-sm font-semibold text-slate-800">Before / After Diff</p>
+                  <p className="card-title-sm mb-2">Before / After Diff</p>
                   <p className="mb-2 rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-xs text-slate-600">
                     Before: <span className="mono">+1 (415) 555-0143</span>
                   </p>
@@ -93,7 +87,7 @@ function HeroAndTrust() {
                   </p>
                 </div>
                 <div className="rounded-xl border border-slate-200 bg-white p-4">
-                  <p className="mb-2 text-sm font-semibold text-slate-800">Case Timeline</p>
+                  <p className="card-title-sm mb-2">Case Timeline</p>
                   <ul className="space-y-1 text-xs text-slate-600">
                     <li>10:04 - Incident opened</li>
                     <li>10:11 - Owner assigned</li>
@@ -114,7 +108,8 @@ function HeroAndTrust() {
         <div className="container-shell grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {trustSignals.map((item) => (
             <article key={item.title} className="rounded-xl border border-slate-200 bg-white p-4">
-              <h3 className="mb-2 text-sm font-semibold">{item.title}</h3>
+              <p className="card-label">Trust Signal</p>
+              <h3 className="card-title-sm mb-2">{item.title}</h3>
               <p className="text-sm text-slate-600">{item.description}</p>
             </article>
           ))}
