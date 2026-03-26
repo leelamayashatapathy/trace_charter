@@ -1,5 +1,8 @@
 import "dotenv/config";
 import crypto from "node:crypto";
+import { existsSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import cors from "cors";
 import express from "express";
 import rateLimit from "express-rate-limit";
@@ -12,12 +15,19 @@ import type { ConsultationLead } from "./types";
 
 const app = express();
 const port = Number(process.env.PORT ?? 8787);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = path.resolve(__dirname, "..");
+const distDir = path.join(projectRoot, "dist");
 
-const allowedOrigins = (process.env.ALLOWED_ORIGIN ?? "http://localhost:3000")
+const allowedOrigins = (
+  process.env.ALLOWED_ORIGIN ??
+  "https://tracecharter.com,https://www.tracecharter.com,http://localhost:3000"
+)
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
 const captchaEnabled = process.env.CAPTCHA_ENABLED === "true";
+const shouldServeStatic = existsSync(path.join(distDir, "index.html"));
 
 const leadSchema = z.object({
   workEmail: z.string().email(),
@@ -42,9 +52,17 @@ const consultationLimiter = rateLimit({
 });
 
 app.use(helmet());
+app.set("trust proxy", Number(process.env.TRUST_PROXY ?? 1));
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(null, false);
+    },
     methods: ["POST", "OPTIONS"],
   }),
 );
@@ -120,6 +138,14 @@ app.post("/api/request-consultation", consultationLimiter, async (req, res) => {
   }
 });
 
+if (shouldServeStatic) {
+  app.use(express.static(distDir, { index: false }));
+
+  app.get(/^(?!\/api(?:\/|$)).*/, (_req, res) => {
+    res.sendFile(path.join(distDir, "index.html"));
+  });
+}
+
 app.listen(port, () => {
-  log("info", "server.started", { port, allowedOrigins });
+  log("info", "server.started", { port, allowedOrigins, servingStatic: shouldServeStatic });
 });

@@ -3,6 +3,7 @@ import type { ConsultationLead, IntegrationResult } from "./types";
 
 async function sendToHubSpot(lead: ConsultationLead) {
   const token = process.env.HUBSPOT_ACCESS_TOKEN;
+  const siteUrl = process.env.SITE_URL ?? "https://tracecharter.com";
   if (!token) {
     return false;
   }
@@ -19,7 +20,7 @@ async function sendToHubSpot(lead: ConsultationLead) {
         company: lead.companyName,
         jobtitle: lead.serviceCategory,
         hs_lead_status: "NEW",
-        website: "tracecharter.com",
+        website: siteUrl,
         message: `Service category: ${lead.serviceCategory}\nLocations: ${lead.locationsManaged}\nIncident type: ${lead.incidentType}\nPhone diverted: ${lead.phoneDiverted}\nNotes: ${lead.notes ?? ""}`,
       },
     }),
@@ -149,8 +150,11 @@ async function sendToCrm(
 
 async function sendEmail(lead: ConsultationLead) {
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.DEMO_TO_EMAIL;
-  const from = process.env.DEMO_FROM_EMAIL ?? "TraceCharter <onboarding@resend.dev>";
+  const to = process.env.CONSULTATION_TO_EMAIL ?? process.env.DEMO_TO_EMAIL;
+  const from =
+    process.env.CONSULTATION_FROM_EMAIL ??
+    process.env.DEMO_FROM_EMAIL ??
+    "TraceCharter <no-reply@tracecharter.com>";
 
   if (!apiKey || !to) {
     log("warn", "email.skipped_missing_config", {
