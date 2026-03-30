@@ -8,7 +8,6 @@ export const navItems = [
   { label: "Product", href: "#product" },
   { label: "Solutions", href: "#solutions" },
   { label: "Why Us", href: "#why-us" },
-  { label: "Security", href: "#security" },
   { label: "Resources", href: "#resources" },
   { label: "Pricing", href: "#pricing" },
 ];

@@ -2,48 +2,12 @@ import {
   faqItems,
   pricingTiers,
   roiPoints,
-  securityControls,
   solutionCards,
 } from "../../content/siteContent";
 
 function OperationsSections() {
   return (
     <>
-      <section id="security" className="section-shell">
-        <div className="container-shell">
-          <div className="mb-10 max-w-3xl">
-            <p className="section-eyebrow">Security, Trust, and Compliance Readiness</p>
-            <h2 className="section-title">Security-grade design for enterprise operations.</h2>
-          </div>
-          <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="card p-6">
-              <ul className="grid gap-3 text-sm text-slate-700">
-                {securityControls.map((item) => (
-                  <li key={item} className="rounded-md border border-slate-200 bg-white px-3 py-2">
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="card p-6">
-              <p className="card-label">Access Control</p>
-              <h3 className="card-title mb-3">Transparent access model</h3>
-              <p className="mb-4 text-sm text-slate-600">
-                Connections are explicit, scoped, and revocable. We never ask for your primary
-                account login, and teams can audit who accessed what, when, and why.
-              </p>
-              <p className="card-label mt-6">Operational Posture</p>
-              <h3 className="card-title mb-3">Calm, realistic posture</h3>
-              <p className="text-sm text-slate-600">
-                The platform improves evidence quality and workflow discipline across Google,
-                Apple, Bing, Yelp, and Facebook. It does not claim control over external
-                platform enforcement outcomes.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section id="solutions" className="section-shell border-y border-slate-200 bg-white/85">
         <div className="container-shell">
           <div className="mb-10 max-w-3xl">
