@@ -111,13 +111,6 @@ function ResourcesAndCta() {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const locationsManaged = Number(formData.get("locationsManaged"));
-
-    if (!Number.isInteger(locationsManaged) || locationsManaged < 1) {
-      setSubmitStatus("error");
-      setSubmitMessage("Please provide a valid number of affected locations.");
-      return;
-    }
 
     if (captchaEnabled && siteKey && (!captchaToken || captchaStatus !== "verified")) {
       setSubmitStatus("error");
@@ -132,9 +125,9 @@ function ResourcesAndCta() {
       const payload = {
         workEmail: String(formData.get("workEmail") ?? "").trim(),
         companyName: String(formData.get("companyName") ?? "").trim(),
-        serviceCategory: String(formData.get("serviceCategory") ?? "").trim(),
-        locationsManaged,
-        incidentType: String(formData.get("incidentType") ?? "").trim(),
+        plan: String(formData.get("plan") ?? "").trim() || undefined,
+        serviceCategory: String(formData.get("serviceCategory") ?? "").trim() || undefined,
+        incidentType: String(formData.get("incidentType") ?? "").trim() || undefined,
         phoneDiverted: String(formData.get("phoneDiverted") ?? "").trim(),
         notes: String(formData.get("notes") ?? "").trim() || undefined,
         captchaToken: captchaEnabled ? captchaToken || undefined : undefined,
@@ -269,10 +262,25 @@ function ResourcesAndCta() {
                 <input id="companyName" name="companyName" type="text" className="form-input" required />
               </div>
               <div>
+                <label htmlFor="plan" className="form-label">
+                  Plan
+                </label>
+                <select id="plan" name="plan" className="form-input">
+                  <option value="">Select a plan</option>
+                  <option value="Self-Service Kit">Self-Service Kit</option>
+                  <option value="Incident Response">Incident Response</option>
+                  <option value="Managed Protection">Managed Protection</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
                 <label htmlFor="serviceCategory" className="form-label">
                   Industry / service type
                 </label>
-                <select id="serviceCategory" name="serviceCategory" className="form-input" required>
+                <select id="serviceCategory" name="serviceCategory" className="form-input">
+                  <option value="">Select an industry / service type</option>
                   <option value="Locksmith">Locksmith</option>
                   <option value="HVAC">HVAC</option>
                   <option value="Plumbing">Plumbing</option>
@@ -282,26 +290,12 @@ function ResourcesAndCta() {
                   <option value="Other urgent-service business">Other urgent-service business</option>
                 </select>
               </div>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label htmlFor="locationsManaged" className="form-label">
-                  Number of locations
-                </label>
-                <input
-                  id="locationsManaged"
-                  name="locationsManaged"
-                  type="number"
-                  min={1}
-                  className="form-input"
-                  required
-                />
-              </div>
               <div>
                 <label htmlFor="incidentType" className="form-label">
                   Incident type
                 </label>
-                <select id="incidentType" name="incidentType" className="form-input" required>
+                <select id="incidentType" name="incidentType" className="form-input">
+                  <option value="">Select an incident type</option>
                   <option value="Listing hijack / malicious edits">
                     Listing hijack / malicious edits
                   </option>

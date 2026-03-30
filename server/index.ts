@@ -32,9 +32,9 @@ const shouldServeStatic = existsSync(path.join(distDir, "index.html"));
 const leadSchema = z.object({
   workEmail: z.string().email(),
   companyName: z.string().min(2).max(120),
-  serviceCategory: z.string().min(2).max(120),
-  locationsManaged: z.number().int().positive().max(100000),
-  incidentType: z.string().min(2).max(240),
+  plan: z.string().min(2).max(120).optional(),
+  serviceCategory: z.string().min(2).max(120).optional(),
+  incidentType: z.string().min(2).max(240).optional(),
   phoneDiverted: z.string().min(2).max(40),
   notes: z.string().max(4000).optional(),
   captchaToken: z.string().min(10).optional(),

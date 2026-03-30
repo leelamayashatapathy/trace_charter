@@ -10,6 +10,10 @@ function escapeHtml(value: string) {
     .replaceAll("'", "&#39;");
 }
 
+function leadDetail(value?: string) {
+  return value?.trim() ? value : "-";
+}
+
 async function sendResendEmail({
   apiKey,
   from,
@@ -60,10 +64,10 @@ async function sendToHubSpot(lead: ConsultationLead) {
       properties: {
         email: lead.workEmail,
         company: lead.companyName,
-        jobtitle: lead.serviceCategory,
+        jobtitle: lead.plan ?? lead.serviceCategory,
         hs_lead_status: "NEW",
         website: siteUrl,
-        message: `Service category: ${lead.serviceCategory}\nLocations: ${lead.locationsManaged}\nIncident type: ${lead.incidentType}\nPhone diverted: ${lead.phoneDiverted}\nNotes: ${lead.notes ?? ""}`,
+        message: `Plan: ${leadDetail(lead.plan)}\nService category: ${leadDetail(lead.serviceCategory)}\nIncident type: ${leadDetail(lead.incidentType)}\nPhone diverted: ${lead.phoneDiverted}\nNotes: ${lead.notes ?? ""}`,
       },
     }),
   });
@@ -86,17 +90,17 @@ async function sendToSalesforce(lead: ConsultationLead) {
 
   const response = await fetch(
     `${instanceUrl}/services/data/v61.0/sobjects/Lead`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        LastName: lead.serviceCategory || "Consultation Request",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+        LastName: lead.serviceCategory || lead.plan || "Consultation Request",
         Company: lead.companyName,
         Email: lead.workEmail,
-        Description: `Service category: ${lead.serviceCategory}\nLocations: ${lead.locationsManaged}\nIncident type: ${lead.incidentType}\nPhone diverted: ${lead.phoneDiverted}\nNotes: ${lead.notes ?? ""}`,
+        Description: `Plan: ${leadDetail(lead.plan)}\nService category: ${leadDetail(lead.serviceCategory)}\nIncident type: ${leadDetail(lead.incidentType)}\nPhone diverted: ${lead.phoneDiverted}\nNotes: ${lead.notes ?? ""}`,
       }),
     },
   );
@@ -153,7 +157,7 @@ async function sendToPipedrive(lead: ConsultationLead) {
       label_ids: [],
       owner_id: null,
       value: null,
-      note: `Service category: ${lead.serviceCategory}\nLocations: ${lead.locationsManaged}\nIncident type: ${lead.incidentType}\nPhone diverted: ${lead.phoneDiverted}\nNotes: ${lead.notes ?? ""}`,
+      note: `Plan: ${leadDetail(lead.plan)}\nService category: ${leadDetail(lead.serviceCategory)}\nIncident type: ${leadDetail(lead.incidentType)}\nPhone diverted: ${lead.phoneDiverted}\nNotes: ${lead.notes ?? ""}`,
     }),
   });
 
@@ -210,9 +214,9 @@ async function sendInternalNotificationEmail(lead: ConsultationLead) {
     <h2>New Consultation Request</h2>
     <p><strong>Email:</strong> ${escapeHtml(lead.workEmail)}</p>
     <p><strong>Company:</strong> ${escapeHtml(lead.companyName)}</p>
-    <p><strong>Service category:</strong> ${escapeHtml(lead.serviceCategory)}</p>
-    <p><strong>Locations:</strong> ${lead.locationsManaged}</p>
-    <p><strong>Incident type:</strong> ${escapeHtml(lead.incidentType)}</p>
+    <p><strong>Plan:</strong> ${escapeHtml(leadDetail(lead.plan))}</p>
+    <p><strong>Service category:</strong> ${escapeHtml(leadDetail(lead.serviceCategory))}</p>
+    <p><strong>Incident type:</strong> ${escapeHtml(leadDetail(lead.incidentType))}</p>
     <p><strong>Phone diverted:</strong> ${escapeHtml(lead.phoneDiverted)}</p>
     <p><strong>Notes:</strong> ${escapeHtml(lead.notes ?? "-")}</p>
   `;
@@ -250,12 +254,14 @@ async function sendSubmitterConfirmationEmail(lead: ConsultationLead) {
   }
 
   const safeCompanyName = escapeHtml(lead.companyName);
-  const safeServiceCategory = escapeHtml(lead.serviceCategory);
+  const safePlan = escapeHtml(leadDetail(lead.plan));
+  const safeServiceCategory = escapeHtml(leadDetail(lead.serviceCategory));
   const html = `
     <h2>We received your Trace Charter consultation request</h2>
     <p>Thanks for reaching out. This confirms that we received the request submitted for <strong>${safeCompanyName}</strong>.</p>
+    <p><strong>Plan:</strong> ${safePlan}</p>
     <p><strong>Service category:</strong> ${safeServiceCategory}</p>
-    <p><strong>Locations impacted:</strong> ${lead.locationsManaged}</p>
+    <p><strong>Incident type:</strong> ${escapeHtml(leadDetail(lead.incidentType))}</p>
     <p>Our team will review the details and follow up using this email address if we need more information.</p>
   `;
 

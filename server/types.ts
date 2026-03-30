@@ -1,9 +1,9 @@
 export type ConsultationLead = {
   workEmail: string;
   companyName: string;
-  serviceCategory: string;
-  locationsManaged: number;
-  incidentType: string;
+  plan?: string;
+  serviceCategory?: string;
+  incidentType?: string;
   phoneDiverted: string;
   notes?: string;
   captchaToken?: string;
