@@ -233,14 +233,18 @@ function CoreSections() {
               View Sample Evidence Pack
             </a>
           </div>
-          <div className="rounded-2xl border border-slate-700 bg-slate-950 p-6">
-            <p className="card-label text-slate-400">Pack Contents</p>
-            <h3 className="card-title-sm mb-4 text-slate-100">Evidence Pack Includes</h3>
+          <div className="group rounded-2xl border border-slate-700 bg-slate-950 p-6 transition duration-300 hover:-translate-y-1 hover:border-slate-500 hover:shadow-[0_20px_50px_rgba(15,23,42,0.35)]">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-slate-400 transition duration-300 group-hover:text-slate-300">
+              Pack Contents
+            </p>
+            <h3 className="mb-4 text-lg font-semibold leading-tight text-slate-100 transition duration-300 group-hover:translate-x-1 group-hover:text-white">
+              Evidence Pack Includes
+            </h3>
             <ul className="grid gap-2 text-sm text-slate-300">
               {evidencePackItems.map((item) => (
                 <li
                   key={item}
-                  className="rounded-md border border-slate-800 bg-slate-900 px-3 py-2"
+                  className="rounded-md border border-slate-800 bg-slate-900 px-3 py-2 transition duration-300 group-hover:border-slate-700 group-hover:bg-slate-800/90 group-hover:translate-x-1"
                 >
                   {item}
                 </li>
