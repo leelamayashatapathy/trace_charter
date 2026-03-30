@@ -73,9 +73,12 @@ function OperationsSections() {
                 </ul>
                 <a
                   href="#consultation"
-                  className="mt-5 inline-block rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-slate-400"
+                  className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-[linear-gradient(135deg,#0f4c81,#1d6aa8)] px-4 py-3 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(15,76,129,0.18)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_30px_rgba(15,76,129,0.24)]"
                 >
                   Request Consultation
+                  <span aria-hidden="true" className="text-base leading-none">
+                    →
+                  </span>
                 </a>
               </article>
             ))}
@@ -89,9 +92,9 @@ function OperationsSections() {
             <p className="section-eyebrow">FAQ</p>
             <h2 className="section-title">Clear answers before you start recovery.</h2>
           </div>
-          <div className="grid gap-3">
+          <div className="grid items-start gap-3 lg:grid-cols-2">
             {faqItems.map((item) => (
-              <details key={item.q} className="card p-5">
+              <details key={item.q} className="card self-start p-5">
                 <summary className="card-title-sm cursor-pointer list-none pr-6">{item.q}</summary>
                 <p className="mt-3 text-sm text-slate-600">{item.a}</p>
               </details>

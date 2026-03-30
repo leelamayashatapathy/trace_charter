@@ -1,6 +1,17 @@
+import { useEffect, useState } from "react";
 import { trustSignals } from "../../content/siteContent";
 
 function HeroAndTrust() {
+  const [minutesVerified, setMinutesVerified] = useState(4);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setMinutesVerified((current) => current + 1);
+    }, 60_000);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
+
   return (
     <>
       <section className="section-shell">
@@ -59,18 +70,20 @@ function HeroAndTrust() {
               <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
                 <div className="mb-2 flex justify-between">
                   <p className="card-title-sm">Incident Alert Feed</p>
-                  <p className="mono text-xs text-slate-500">Last verified 4 minutes ago</p>
+                  <p className="mono text-xs text-slate-500">
+                    Last verified {minutesVerified} minute{minutesVerified === 1 ? "" : "s"} ago
+                  </p>
                 </div>
                 <ul className="space-y-2 text-sm text-slate-600">
-                  <li className="flex justify-between">
+                  <li className="flex justify-between gap-3">
                     <span>Emergency hotline replaced with scam number for 8 locations</span>
                     <span className="font-semibold text-rose-700">critical</span>
                   </li>
-                  <li className="flex justify-between">
+                  <li className="flex justify-between gap-3">
                     <span>Negative review surge hits two HVAC service areas</span>
                     <span className="font-semibold text-amber-700">high</span>
                   </li>
-                  <li className="flex justify-between">
+                  <li className="flex justify-between gap-3">
                     <span>Fake towing duplicate outranking verified listing</span>
                     <span className="font-semibold text-amber-700">high</span>
                   </li>
