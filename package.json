@@ -8,13 +8,13 @@
   },
   "scripts": {
     "dev": "concurrently -k \"npm:dev:server\" \"npm:dev:client\"",
-    "dev:client": "vite",
+    "dev:client": "vite --configLoader native",
     "dev:server": "tsx watch server/index.ts",
     "start:server": "tsx server/index.ts",
     "start": "tsx server/index.ts",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build --configLoader native",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview --configLoader native"
   },
   "dependencies": {
     "cors": "^2.8.6",

@@ -17,7 +17,7 @@ React + Vite frontend with an Express API, prepared for a single production depl
 - Rate limiting with `express-rate-limit`
 - CAPTCHA verification using Cloudflare Turnstile
 - CRM delivery support for HubSpot, Salesforce, and Pipedrive
-- Optional email delivery via Resend
+- Optional email delivery via Resend for both internal alerts and submitter confirmations
 - Structured JSON logging
 - Production static serving for the Vite build
 
@@ -44,6 +44,7 @@ React + Vite frontend with an Express API, prepared for a single production depl
 3. Configure at least one delivery destination:
    - CRM: `CRM_PROVIDER` plus provider credentials
    - or email: `RESEND_API_KEY` and `CONSULTATION_TO_EMAIL`
+   - submitter confirmations use `RESEND_API_KEY` and the submitted `workEmail`
 4. Enable CAPTCHA only when you have both keys:
    - `VITE_CAPTCHA_ENABLED=true`
    - `VITE_TURNSTILE_SITE_KEY=...`
@@ -172,7 +173,8 @@ Success response:
   "message": "Consultation request received. Our team will contact you shortly.",
   "requestId": "uuid",
   "integrationResult": {
-    "emailDelivered": true,
+    "internalEmailDelivered": true,
+    "confirmationEmailDelivered": true,
     "crmDelivered": true,
     "crmProvider": "hubspot"
   }

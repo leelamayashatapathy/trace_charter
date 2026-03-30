@@ -10,7 +10,8 @@ export type ConsultationLead = {
 };
 
 export type IntegrationResult = {
-  emailDelivered: boolean;
+  internalEmailDelivered: boolean;
+  confirmationEmailDelivered: boolean;
   crmDelivered: boolean;
   crmProvider?: "hubspot" | "salesforce" | "pipedrive";
 };

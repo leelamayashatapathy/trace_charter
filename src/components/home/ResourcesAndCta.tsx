@@ -9,6 +9,7 @@ declare global {
         container: string | HTMLElement,
         options: {
           sitekey: string;
+          appearance?: "always" | "execute" | "interaction-only";
           callback?: (token: string) => void;
           "expired-callback"?: () => void;
           "error-callback"?: () => void;
@@ -21,16 +22,19 @@ declare global {
 }
 
 type SubmitStatus = "idle" | "submitting" | "success" | "error";
+type CaptchaStatus = "idle" | "loading" | "verified" | "error";
 
 function ResourcesAndCta() {
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");
   const [submitMessage, setSubmitMessage] = useState("");
   const [captchaToken, setCaptchaToken] = useState("");
-  const [captchaReady, setCaptchaReady] = useState(false);
+  const [captchaStatus, setCaptchaStatus] = useState<CaptchaStatus>("loading");
+  const [captchaMessage, setCaptchaMessage] = useState("");
   const captchaEnabled = import.meta.env.VITE_CAPTCHA_ENABLED === "true";
   const siteKey = captchaEnabled ? import.meta.env.VITE_TURNSTILE_SITE_KEY : undefined;
   const turnstileContainerRef = useRef<HTMLDivElement | null>(null);
   const widgetIdRef = useRef<string | null>(null);
+
   useEffect(() => {
     if (!siteKey || !turnstileContainerRef.current || widgetIdRef.current) {
       return;
@@ -49,7 +53,8 @@ function ResourcesAndCta() {
       if (!api) {
         attempts += 1;
         if (attempts > 80) {
-          setCaptchaReady(false);
+          setCaptchaStatus("error");
+          setCaptchaMessage("Security verification failed to load. Please refresh and try again.");
           if (intervalId) {
             window.clearInterval(intervalId);
           }
@@ -59,20 +64,25 @@ function ResourcesAndCta() {
 
       widgetIdRef.current = api.render(turnstileContainerRef.current, {
         sitekey: siteKey,
+        appearance: "always",
         callback: (token) => {
           setCaptchaToken(token);
-          setCaptchaReady(true);
+          setCaptchaStatus("verified");
+          setCaptchaMessage("Security verification complete.");
         },
         "expired-callback": () => {
           setCaptchaToken("");
-          setCaptchaReady(false);
+          setCaptchaStatus("idle");
+          setCaptchaMessage("Verification expired. Please verify again.");
         },
         "error-callback": () => {
           setCaptchaToken("");
-          setCaptchaReady(false);
+          setCaptchaStatus("error");
+          setCaptchaMessage("Security verification failed. Please try again.");
         },
       });
-      setCaptchaReady(true);
+      setCaptchaStatus("idle");
+      setCaptchaMessage("");
 
       if (intervalId) {
         window.clearInterval(intervalId);
@@ -92,6 +102,8 @@ function ResourcesAndCta() {
       }
       widgetIdRef.current = null;
       setCaptchaToken("");
+      setCaptchaStatus("loading");
+      setCaptchaMessage("");
     };
   }, [siteKey]);
 
@@ -107,9 +119,9 @@ function ResourcesAndCta() {
       return;
     }
 
-    if (captchaEnabled && siteKey && !captchaToken) {
+    if (captchaEnabled && siteKey && (!captchaToken || captchaStatus !== "verified")) {
       setSubmitStatus("error");
-      setSubmitMessage("Please complete CAPTCHA verification before submitting.");
+      setSubmitMessage("Please verify the security check before submitting.");
       return;
     }
 
@@ -146,6 +158,8 @@ function ResourcesAndCta() {
         window.turnstile?.reset(widgetIdRef.current ?? undefined);
       }
       setCaptchaToken("");
+      setCaptchaStatus(captchaEnabled ? "idle" : "verified");
+      setCaptchaMessage(captchaEnabled ? "Please verify again before sending another request." : "");
       setSubmitStatus("success");
       setSubmitMessage(result.message ?? "Consultation request received.");
     } catch (error) {
@@ -334,9 +348,20 @@ function ResourcesAndCta() {
               siteKey ? (
                 <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
                   <div ref={turnstileContainerRef} />
-                  {!captchaReady ? (
+                  {captchaStatus === "loading" ? (
                     <p className="mt-2 text-xs text-slate-500">Loading CAPTCHA...</p>
                   ) : null}
+                  <p
+                    className={`mt-3 text-xs ${
+                      captchaStatus === "verified"
+                        ? "text-emerald-700"
+                        : captchaStatus === "error"
+                          ? "text-rose-700"
+                          : "text-slate-500"
+                    }`}
+                  >
+                    {captchaMessage || "Complete the Cloudflare security check before submitting."}
+                  </p>
                   <input type="hidden" name="captchaToken" value={captchaToken} readOnly />
                 </div>
               ) : (
@@ -368,7 +393,9 @@ function ResourcesAndCta() {
 
             <button
               type="submit"
-              disabled={submitStatus === "submitting"}
+              disabled={
+                submitStatus === "submitting" || (captchaEnabled && siteKey && captchaStatus !== "verified")
+              }
               className="w-full rounded-lg bg-[#0f4c81] px-4 py-3 text-sm font-semibold text-white hover:bg-[#0d416d] disabled:cursor-not-allowed disabled:opacity-70"
             >
               {submitStatus === "submitting" ? "Submitting..." : "Request Consultation"}
