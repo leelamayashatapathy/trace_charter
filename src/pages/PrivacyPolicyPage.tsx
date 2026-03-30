@@ -164,10 +164,7 @@ function PrivacyPolicyPage() {
       <div className="container-shell">
         <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
           <aside className="lg:sticky lg:top-28 lg:self-start">
-            <p className="section-eyebrow mb-3">Policy Timeline</p>
-            <p className="mb-4 text-sm leading-6 text-slate-600">
-              Jump directly to each section of the privacy policy.
-            </p>
+            <p className="section-eyebrow mb-4">Privacy Policy</p>
             <nav aria-label="Privacy policy sections">
               <div className="border-l border-slate-200 pl-4">
                 <div className="space-y-2">
@@ -186,41 +183,39 @@ function PrivacyPolicyPage() {
             </nav>
           </aside>
 
-          <div className="rounded-[1.75rem] border border-slate-200 bg-white/92 shadow-[0_18px_60px_rgba(15,23,42,0.08)]">
-            <div
-              ref={contentRef}
-              className="p-6 sm:p-8 lg:max-h-[calc(100vh-8.5rem)] lg:overflow-y-auto lg:p-10"
-            >
-              <p className="section-eyebrow">Legal</p>
-              <h1 className="card-title-lg text-[clamp(1.8rem,3vw,2.5rem)]">Tracecharter Privacy Policy</h1>
-              <p className="mt-4 whitespace-pre-wrap text-sm font-medium text-slate-500">
-                Effective Date: [Insert Date]  |  Last Updated: [Insert Date]
+          <div
+            ref={contentRef}
+            className="scrollbar-hidden p-1 sm:p-2 lg:max-h-[calc(100vh-8.5rem)] lg:overflow-y-auto"
+          >
+            <p className="section-eyebrow">Legal</p>
+            <h1 className="card-title-lg text-[clamp(1.8rem,3vw,2.5rem)]">Tracecharter Privacy Policy</h1>
+            <p className="mt-4 whitespace-pre-wrap text-sm font-medium text-slate-500">
+              Effective Date: [Insert Date]  |  Last Updated: [Insert Date]
+            </p>
+            <div className="mt-8 space-y-6 text-[15px] leading-7 text-slate-700">
+              <p>
+                Tracecharter ("Tracecharter," "we," "our," or "us") provides business identity incident response services focused on public business listings, reviews, impersonation, malicious edits, duplicate listings, and related reputation or listing integrity incidents.
               </p>
-              <div className="mt-8 space-y-6 text-[15px] leading-7 text-slate-700">
-                <p>
-                  Tracecharter ("Tracecharter," "we," "our," or "us") provides business identity incident response services focused on public business listings, reviews, impersonation, malicious edits, duplicate listings, and related reputation or listing integrity incidents.
-                </p>
-                <p>
-                  This Privacy Policy explains how we collect, use, store, and protect information when you use our website, contact us, or engage our services.
-                </p>
+              <p>
+                This Privacy Policy explains how we collect, use, store, and protect information when you use our website, contact us, or engage our services.
+              </p>
 
-                {sectionLinks.map((section) => (
-                  <section
-                    key={section.id}
-                    ref={(element) => {
-                      sectionRefs.current[section.id] = element;
-                    }}
-                    className="space-y-3"
-                  >
-                    <h2 className="text-lg font-semibold text-slate-900">{section.heading}</h2>
-                    {section.paragraphs.map((paragraph) => (
-                      <p key={paragraph} className="whitespace-pre-wrap">
-                        {renderParagraph(paragraph)}
-                      </p>
-                    ))}
-                  </section>
-                ))}
-              </div>
+              {sectionLinks.map((section) => (
+                <section
+                  key={section.id}
+                  ref={(element) => {
+                    sectionRefs.current[section.id] = element;
+                  }}
+                  className="space-y-3"
+                >
+                  <h2 className="text-lg font-semibold text-slate-900">{section.heading}</h2>
+                  {section.paragraphs.map((paragraph) => (
+                    <p key={paragraph} className="whitespace-pre-wrap">
+                      {renderParagraph(paragraph)}
+                    </p>
+                  ))}
+                </section>
+              ))}
             </div>
           </div>
         </div>
