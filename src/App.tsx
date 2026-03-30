@@ -1,32 +1,38 @@
 import { useEffect } from "react";
-import StructuredData from "./components/common/StructuredData";
-import CoreSections from "./components/home/CoreSections";
-import HeroAndTrust from "./components/home/HeroAndTrust";
-import OperationsSections from "./components/home/OperationsSections";
-import ResourcesAndCta from "./components/home/ResourcesAndCta";
+import { Route, Routes, useLocation } from "react-router-dom";
 import SiteFooter from "./components/layout/SiteFooter";
 import SiteHeader from "./components/layout/SiteHeader";
-import { faqSchema, softwareSchema } from "./content/schema";
+import HomePage from "./pages/HomePage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
+
+function ScrollManager() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const targetId = decodeURIComponent(location.hash.slice(1));
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+    }
+
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [location.hash, location.pathname]);
+
+  return null;
+}
 
 function App() {
-  useEffect(() => {
-    document.title = "TraceCharter | Business Identity Incident Response";
-  }, []);
-
   return (
     <div className="min-h-screen overflow-x-hidden text-slate-900">
-      <StructuredData data={softwareSchema} />
-      <StructuredData data={faqSchema} />
-
+      <ScrollManager />
       <SiteHeader />
-
-      <main id="top">
-        <HeroAndTrust />
-        <CoreSections />
-        <OperationsSections />
-        <ResourcesAndCta />
-      </main>
-
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+      </Routes>
       <SiteFooter />
     </div>
   );
